@@ -1,13 +1,26 @@
-import csv, io
+import csv, io, random
 from django.shortcuts import render
 from django.contrib import messages
-from rest_framework import viewsets
+from rest_framework import viewsets, response
+from rest_framework.decorators import action
 from api.serializers import WordSerializer
 from api.models import Word, Language, Exemple, Meaning
 
 class WordViewset(viewsets.ModelViewSet):
 	queryset = Word.objects.all().order_by('name')
 	serializer_class = WordSerializer
+
+	@action(
+		methods=['get'], detail=False,
+		url_path="random", url_name="random"
+	)
+	def random(self, request):
+		total = Word.objects.all().count()
+		random_index = random.randint(1, total - 1)
+		queryset = Word.objects.all()[random_index]
+		serializer = self.serializer_class(queryset)
+		return response.Response(serializer.data)
+
 
 # Create your views here.
 

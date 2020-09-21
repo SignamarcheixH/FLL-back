@@ -21,5 +21,5 @@ from api.views import csv_upload
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('upload-csv/', csv_upload,name="csv_upload" )
+    path('upload-csv/', csv_upload, name="csv_upload" )
 ]
