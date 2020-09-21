@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from rest_framework import viewsets, response
 from rest_framework.decorators import action
-from api.serializers import WordSerializer
+from api.serializers import WordSerializer, MeaningSerializer
 from api.models import Word, Language, Exemple, Meaning
 
 class WordViewset(viewsets.ModelViewSet):
@@ -18,6 +18,21 @@ class WordViewset(viewsets.ModelViewSet):
 		total = Word.objects.all().count()
 		random_index = random.randint(1, total - 1)
 		queryset = Word.objects.all()[random_index]
+		serializer = self.serializer_class(queryset)
+		return response.Response(serializer.data)
+
+class MeaningViewset(viewsets.ModelViewSet):
+	queryset = Meaning.objects.all()
+	serializer_class = MeaningSerializer
+
+	@action(
+		methods=['get'], detail=False,
+		url_path="random", url_name="random"
+	)
+	def random(self, request):
+		total = Meaning.objects.all().count()
+		random_index = random.randint(1, total - 1)
+		queryset = Meaning.objects.all()[random_index]
 		serializer = self.serializer_class(queryset)
 		return response.Response(serializer.data)
 

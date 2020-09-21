@@ -4,7 +4,7 @@ from api import views
 
 router = routers.DefaultRouter()
 router.register(r'words', views.WordViewset)
-#router.register(r'words/random', views.WordViewset.getWord, basename='random-word')
+router.register(r'meanings', views.MeaningViewset)
 
 urlpatterns = [
 	path('', include(router.urls)),
