@@ -22,8 +22,17 @@ class WordViewset(viewsets.ModelViewSet):
 		return response.Response(serializer.data)
 
 class MeaningViewset(viewsets.ModelViewSet):
-	queryset = Meaning.objects.all()
+
+
 	serializer_class = MeaningSerializer
+
+	def get_queryset(self):
+		queryset = Meaning.objects.all()
+		filter_letter = self.request.query_params.get('letter', None)
+		if(filter_letter):
+			queryset = queryset.filter(word__name__startswith=filter_letter)
+		return queryset
+		
 
 	@action(
 		methods=['get'], detail=False,

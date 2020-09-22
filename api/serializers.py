@@ -16,7 +16,7 @@ class LanguageSerializer(serializers.ModelSerializer):
 class ExempleSerializer(serializers.ModelSerializer):
 	
 	language_obj = LanguageSerializer(source="language")
-	
+
 	class Meta:
 		model = Exemple
 		fields = ('id', 'sentence', 'language_obj')
@@ -24,9 +24,10 @@ class ExempleSerializer(serializers.ModelSerializer):
 
 class MeaningSerializer(serializers.ModelSerializer):
 	
+	grammatical_type_verbose = serializers.CharField(source='get_grammatical_type_display') 
 	exemple_obj = ExempleSerializer(source="exemple", many=True)
 	word_obj = WordSerializer(source="word")
 
 	class Meta:
 		model = Meaning
-		fields = ['id', 'grammatical_type', 'meaning', 'families', 'exemple_obj', 'word_obj']
+		fields = ['id', 'grammatical_type', 'grammatical_type_verbose', 'meaning', 'families', 'exemple_obj', 'word_obj']
