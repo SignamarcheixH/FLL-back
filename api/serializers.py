@@ -1,10 +1,16 @@
 from rest_framework import serializers
-from api.models import Word, Meaning, Language, Exemple
+from api.models import Word, Meaning, Language, Exemple, Code
 
 class WordSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Word
-		fields = ('id', 'name',)
+		fields = ('id', 'name', 'pronunciation')
+
+
+class CodeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Code
+		fields = ('id', 'name', 'abbreviation')
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -24,10 +30,11 @@ class ExempleSerializer(serializers.ModelSerializer):
 
 class MeaningSerializer(serializers.ModelSerializer):
 	
-	grammatical_type_verbose = serializers.CharField(source='get_grammatical_type_display') 
+	grammatical_type_verbose = serializers.CharField(source='get_grammatical_type_display')
+	codes_obj = CodeSerializer(source='codes', many=True)
 	exemple_obj = ExempleSerializer(source="exemple", many=True)
 	word_obj = WordSerializer(source="word")
 
 	class Meta:
 		model = Meaning
-		fields = ['id', 'grammatical_type', 'grammatical_type_verbose', 'meaning', 'families', 'exemple_obj', 'word_obj']
+		fields = ['id', 'grammatical_type', 'grammatical_type_verbose', 'meaning', 'families', 'exemple_obj', 'word_obj', 'codes_obj']

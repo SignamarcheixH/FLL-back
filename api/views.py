@@ -27,10 +27,10 @@ class MeaningViewset(viewsets.ModelViewSet):
 	serializer_class = MeaningSerializer
 
 	def get_queryset(self):
-		queryset = Meaning.objects.all()
+		queryset = Meaning.objects.all().order_by('word__name')
 		filter_letter = self.request.query_params.get('letter', None)
 		if(filter_letter):
-			queryset = queryset.filter(word__name__startswith=filter_letter)
+			queryset = queryset.filter(word__name__startswith=filter_letter).order_by('word__name')
 		return queryset
 		
 

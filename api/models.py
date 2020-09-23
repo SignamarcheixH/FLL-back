@@ -4,6 +4,7 @@ from django.db import models
 
 class Word(models.Model):
 	name = models.CharField(max_length=60)
+	pronunciation = models.CharField(max_length=60, blank=True)
 
 	def __str__(self):
 		return self.name
@@ -27,6 +28,14 @@ class Exemple(models.Model):
 	def __str__(self):
 		return self.sentence
 
+class Code(models.Model):
+	name = models.CharField(max_length=50)
+	abbreviation = models.CharField(max_length=20, blank=True)
+	use = models.CharField(max_length=100, blank=True)
+
+	def __str__(self):
+		return self.name
+
 class Meaning(models.Model):
 	VERB = 0
 	ADJECTIVE = 1
@@ -43,6 +52,7 @@ class Meaning(models.Model):
 	families = models.ManyToManyField(Family, blank=True)
 	exemple = models.ManyToManyField(Exemple, blank=True)
 	word = models.ForeignKey('Word', on_delete=models.CASCADE, blank=True, default=None, null=True)
+	codes = models.ManyToManyField(Code, blank=True)
 
 	def __str__(self):
 		return self.meaning
